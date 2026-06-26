@@ -1,0 +1,10 @@
+services:
+  wiremock:
+    container_name: wiremock
+    image: rodolpheche/wiremock
+    ports:
+      - "8888:8080"
+    volumes:
+      - ./.wiremock:/home/wiremock
+    command:
+      - "--verbose"
