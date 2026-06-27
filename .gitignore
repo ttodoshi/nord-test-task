@@ -38,4 +38,5 @@ build/
 ### Mac OS ###
 .DS_Store
 
+.allure
 internal-0.0.1-SNAPSHOT.jar
