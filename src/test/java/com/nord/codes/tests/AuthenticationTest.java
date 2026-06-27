@@ -4,27 +4,28 @@ import com.nord.codes.assertions.ResponseAssertions;
 import com.nord.codes.client.EndpointClient;
 import com.nord.codes.tests.base.BaseTest;
 import com.nord.codes.utils.TokenGenerator;
+import io.qameta.allure.Epic;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-@DisplayName("Авторизация")
+@Epic("Endpoint API")
+@DisplayName("Логин и выход")
 class AuthenticationTest extends BaseTest {
     private final EndpointClient endpointClient = new EndpointClient();
 
     @Test
-    @DisplayName("Логин доступен с валидным токеном")
+    @DisplayName("Успешный LOGIN с валидным токеном")
     void shouldLoginSuccessfully() {
         String token = TokenGenerator.valid();
 
         Response response = endpointClient.login(token);
 
-        ResponseAssertions.assertStatus(response, 200);
         ResponseAssertions.assertOk(response);
     }
 
     @Test
-    @DisplayName("Логин не доступен с валидным токеном при повторной попытке")
+    @DisplayName("Повторный LOGIN запрещен")
     void shouldNotAllowDoubleLogin() {
         String token = TokenGenerator.valid();
 
@@ -32,35 +33,32 @@ class AuthenticationTest extends BaseTest {
 
         Response response = endpointClient.login(token);
 
-        ResponseAssertions.assertStatus(response, 409);
-        ResponseAssertions.assertError(response, "already exists");
+        ResponseAssertions.assertError(response, 409, "already exists");
     }
 
     @Test
-    @DisplayName("Логаут доступен после LOGIN")
+    @DisplayName("Успешный LOGOUT после LOGIN")
     void shouldLogoutSuccessfully() {
         String token = TokenGenerator.valid();
 
         endpointClient.login(token);
         Response response = endpointClient.logout(token);
 
-        ResponseAssertions.assertStatus(response, 200);
         ResponseAssertions.assertOk(response);
     }
 
     @Test
-    @DisplayName("Логаут не доступен без LOGIN")
+    @DisplayName("LOGOUT без LOGIN запрещен")
     void shouldNotAllowLogoutWithoutLogin() {
         String token = TokenGenerator.valid();
 
         Response response = endpointClient.logout(token);
 
-        ResponseAssertions.assertStatus(response, 403);
-        ResponseAssertions.assertError(response, "not found");
+        ResponseAssertions.assertError(response, 403, "not found");
     }
 
     @Test
-    @DisplayName("Логаут не доступен при повторной попытке")
+    @DisplayName("Повторный LOGOUT запрещен")
     void shouldNotAllowDoubleLogout() {
         String token = TokenGenerator.valid();
 
@@ -68,7 +66,6 @@ class AuthenticationTest extends BaseTest {
         endpointClient.logout(token);
         Response response = endpointClient.logout(token);
 
-        ResponseAssertions.assertStatus(response, 403);
-        ResponseAssertions.assertError(response, "not found");
+        ResponseAssertions.assertError(response, 403, "not found");
     }
 }
