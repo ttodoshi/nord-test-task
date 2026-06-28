@@ -2,6 +2,7 @@ package com.nord.codes.config;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
+import com.github.tomakehurst.wiremock.http.Fault;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -26,7 +27,8 @@ public class WireMockConfig {
     }
 
     public static void stopWireMock() {
-        wireMockServer.stop();
+        if (wireMockServer.isRunning())
+            wireMockServer.stop();
     }
 
     public static void stubAuthOk() {
@@ -71,5 +73,17 @@ public class WireMockConfig {
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withFixedDelay(TIMEOUT_MS)));
+    }
+
+    public static void stubAuthNetworkFault() {
+        stubFor(post(urlEqualTo("/auth"))
+                .willReturn(aResponse()
+                        .withFault(Fault.CONNECTION_RESET_BY_PEER)));
+    }
+
+    public static void stubActionNetworkFault() {
+        stubFor(post(urlEqualTo("/doAction"))
+                .willReturn(aResponse()
+                        .withFault(Fault.CONNECTION_RESET_BY_PEER)));
     }
 }

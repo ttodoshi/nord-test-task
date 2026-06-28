@@ -24,7 +24,7 @@ public class EndpointClient {
         return sendRequest(token, LOGOUT);
     }
 
-    @Step("Отправка запрос с действием {2}")
+    @Step("Отправка запроса с действием {2}")
     public Response sendRawRequest(String xApiKey, String token, String action) {
         var request = given()
                 .contentType(ContentType.URLENC);

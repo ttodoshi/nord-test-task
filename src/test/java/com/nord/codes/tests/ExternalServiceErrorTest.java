@@ -1,10 +1,13 @@
 package com.nord.codes.tests;
 
 import com.nord.codes.assertions.ResponseAssertions;
+import com.nord.codes.assertions.WireMockAssertions;
 import com.nord.codes.client.EndpointClient;
 import com.nord.codes.tests.base.BaseTest;
 import com.nord.codes.utils.TokenGenerator;
 import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -13,6 +16,8 @@ import org.junit.jupiter.api.Test;
 import static com.nord.codes.config.WireMockConfig.*;
 
 @Epic("Endpoint API")
+@Feature("Интеграция с внешним сервисом")
+@Story("Ошибки ответов (HTTP 5xx, Таймауты)")
 @DisplayName("Ошибки внешнего сервиса")
 class ExternalServiceErrorTest extends BaseTest {
     private final EndpointClient endpointClient = new EndpointClient();
@@ -27,6 +32,7 @@ class ExternalServiceErrorTest extends BaseTest {
         Response response = endpointClient.login(token);
 
         ResponseAssertions.assertError(response, 500, "Internal Server Error");
+        WireMockAssertions.assertAuthCalls(1, token);
     }
 
     @Test
@@ -41,11 +47,12 @@ class ExternalServiceErrorTest extends BaseTest {
         Response response = endpointClient.action(token);
 
         ResponseAssertions.assertError(response, 500, "Internal Server Error");
+        WireMockAssertions.assertActionCalls(1, token);
     }
 
     @Test
     @DisplayName("Таймаут внешней авторизации")
-    @Disabled("Тест на таймаут от внешнего сервиса. Отключен чтобы быстрее проходило")
+    @Disabled("ТЕСТ ОТКЛЮЧЕН ДЛЯ БЫСТРОЙ ПРОВЕРКИ (время выполнения ~11 секунд)")
     void shouldHandleAuthTimeout() {
         stubAuthTimeout();
 
@@ -54,11 +61,12 @@ class ExternalServiceErrorTest extends BaseTest {
         Response response = endpointClient.login(token);
 
         ResponseAssertions.assertError(response, 500, "Internal Server Error");
+        WireMockAssertions.assertAuthCalls(1, token);
     }
 
     @Test
     @DisplayName("Таймаут выполнения внешнего действия")
-    @Disabled("Тест на таймаут от внешнего сервиса. Отключен чтобы быстрее проходило")
+    @Disabled("ТЕСТ ОТКЛЮЧЕН ДЛЯ БЫСТРОЙ ПРОВЕРКИ (время выполнения ~11 секунд)")
     void shouldHandleActionTimeout() {
         stubActionTimeout();
 
@@ -68,5 +76,6 @@ class ExternalServiceErrorTest extends BaseTest {
         Response response = endpointClient.action(token);
 
         ResponseAssertions.assertError(response, 500, "Internal Server Error");
+        WireMockAssertions.assertActionCalls(1, token);
     }
 }
