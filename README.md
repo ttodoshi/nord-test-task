@@ -36,6 +36,8 @@ mvn allure:serve
 
 ## Результат
 
-<img width="1650" height="1015" alt="{98F2982D-2D3B-48AA-B78C-AB9535349F8C}" src="https://github.com/user-attachments/assets/21d10072-05e5-46f1-bcbb-a3b939019c2b" />
+<img width="1649" height="1002" alt="{E5D72785-CC70-4124-AD6C-1D8E823CF533}" src="https://github.com/user-attachments/assets/ebc63a81-f507-4561-896b-20c5a5b2e8a3" />
 
-<img width="1650" height="1008" alt="{69E37700-E067-4898-8F7D-60EF03B5B33D}" src="https://github.com/user-attachments/assets/b4968d94-ead6-42d7-b2f1-678fddedce0c" />
+<img width="1652" height="1009" alt="{C361D01E-3CEC-4339-A387-B6878F976C9F}" src="https://github.com/user-attachments/assets/4dfe2994-9411-4e40-9db8-74664a846c4e" />
+
+<img width="1652" height="1004" alt="{8CBF5B6A-2849-44A1-BECB-13731A507B1B}" src="https://github.com/user-attachments/assets/e951517c-499b-4b93-a9c8-15fbdfd3a220" />
